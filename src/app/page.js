@@ -7,7 +7,6 @@ export default function HomePage() {
       <h1 className="text-3xl font-bold">Welcome to AI Chat</h1>
       <div className="space-x-4">
         <Link href="/chat" className="btn btn-primary">Go to Chat</Link>
-        <Link href="/chatbotinterface" className="btn btn-secondary">ChatBot Interface</Link>
       </div>
     </main>
   );
