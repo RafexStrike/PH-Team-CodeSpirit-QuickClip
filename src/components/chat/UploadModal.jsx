@@ -2,6 +2,8 @@
 import { useState } from 'react';
 
 export default function UploadModal({ isOpen, onClose, onUpload }) {
+
+   console.log("src/components/chat/UploadModal.jsx component is triggered"); 
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -10,6 +12,8 @@ export default function UploadModal({ isOpen, onClose, onUpload }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) return;
+
+     console.log("Upload started");
 
     setLoading(true);          // <-- show loader
     try {

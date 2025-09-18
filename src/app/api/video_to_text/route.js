@@ -8,6 +8,7 @@ import { exec } from "child_process";
 const hf = new InferenceClient(process.env.HF_TOKEN);
 
 export async function POST(req) {
+  console.log("API /video_to_text called");
   try {
     const form = await req.formData();
     const videoFile = form.get("video");
