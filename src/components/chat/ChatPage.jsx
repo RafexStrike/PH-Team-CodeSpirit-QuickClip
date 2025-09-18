@@ -1,11 +1,11 @@
-'use client';
-import { useState } from 'react';
-import UploadButton from '@/components/chat/UploadButton';
-import UploadModal from '@/components/chat/UploadModal';
-import ChatSidebar from '@/components/chat/ChatSidebar';
-import ChatWindow from '@/components/chat/ChatWindow';
-import ChatComposer from '@/components/chat/ChatComposer';
-import { uploadVideoAndSummarize } from '@/lib/uploadVideo';
+"use client";
+import { useState } from "react";
+import UploadButton from "@/components/chat/UploadButton";
+import UploadModal from "@/components/chat/UploadModal";
+import ChatSidebar from "@/components/chat/ChatSidebar";
+import ChatWindow from "@/components/chat/ChatWindow";
+import ChatComposer from "@/components/chat/ChatComposer";
+import { uploadVideoAndSummarize } from "@/lib/uploadVideo";
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
@@ -21,7 +21,7 @@ export default function ChatPage() {
         {
           id: Date.now(),
           content: `Summary: ${data.summary}`,
-          sender: 'bot',
+          sender: "bot",
           timestamp: new Date(),
         },
       ]);
@@ -31,7 +31,7 @@ export default function ChatPage() {
         {
           id: Date.now(),
           content: `Error: ${data.error}`,
-          sender: 'bot',
+          sender: "bot",
           timestamp: new Date(),
         },
       ]);
@@ -46,7 +46,12 @@ export default function ChatPage() {
           <UploadButton onClick={() => setIsModalOpen(true)} />
         </div>
         <ChatWindow messages={messages} />
-        <ChatComposer /* your props */ />
+        {/* <ChatComposer  /> */}
+        <ChatComposer
+          inputValue={inputValue}
+          onInputChange={setInputValue}
+          onSendMessage={handleSendMessage}
+        />
       </div>
 
       <UploadModal

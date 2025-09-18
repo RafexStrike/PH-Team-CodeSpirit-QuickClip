@@ -3,13 +3,19 @@ import { useState } from 'react';
 
 export default function UploadModal({ isOpen, onClose, onUpload }) {
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (file) {
-      onUpload(file);
+    if (!file) return;
+
+    setLoading(true);          // <-- show loader
+    try {
+      await onUpload(file);
+    } finally {
+      setLoading(false);       // <-- hide loader
       onClose();
     }
   };
@@ -24,21 +30,19 @@ export default function UploadModal({ isOpen, onClose, onUpload }) {
             accept="video/*"
             onChange={(e) => setFile(e.target.files[0])}
             className="file-input file-input-bordered w-full mb-4"
+            disabled={loading}
           />
           <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
               className="btn btn-ghost"
+              disabled={loading}
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={!file}
-            >
-              Upload
+            <button type="submit" className="btn btn-primary" disabled={!file || loading}>
+              {loading ? 'Processing...' : 'Upload'}
             </button>
           </div>
         </form>
