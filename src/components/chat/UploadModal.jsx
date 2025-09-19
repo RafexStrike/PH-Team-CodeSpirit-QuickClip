@@ -1,26 +1,38 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 export default function UploadModal({ isOpen, onClose, onUpload }) {
-
-   console.log("src/components/chat/UploadModal.jsx component is triggered"); 
+  console.log("src/components/chat/UploadModal.jsx component is triggered");
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    console.log(
+      "returned from UploadModal.jsx because isOpen or isModalOpen is false"
+    );
+    return null;
+  }
 
   const handleSubmit = async (e) => {
+    console.log(
+      "entered handleSubmit (in src/components/chat/UploadModal.jsx component)"
+    );
     e.preventDefault();
     if (!file) return;
 
-     console.log("Upload started");
+    console.log(
+      "Upload started (in src/components/chat/UploadModal.jsx component)"
+    );
 
-    setLoading(true);          // <-- show loader
+    setLoading(true); // <-- show loader
     try {
       await onUpload(file);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
     } finally {
-      setLoading(false);       // <-- hide loader
-      onClose();
+      setLoading(false); // <-- hide loader
+      // onClose();
     }
   };
 
@@ -32,7 +44,10 @@ export default function UploadModal({ isOpen, onClose, onUpload }) {
           <input
             type="file"
             accept="video/*"
-            onChange={(e) => setFile(e.target.files[0])}
+            onChange={(e) => {
+              console.log("File selected:", e.target.files[0]);
+              setFile(e.target.files[0]);
+            }}
             className="file-input file-input-bordered w-full mb-4"
             disabled={loading}
           />
@@ -45,8 +60,12 @@ export default function UploadModal({ isOpen, onClose, onUpload }) {
             >
               Cancel
             </button>
-            <button type="submit" className="btn btn-primary" disabled={!file || loading}>
-              {loading ? 'Processing...' : 'Upload'}
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={!file || loading}
+            >
+              {loading ? "Processing..." : "Upload"}
             </button>
           </div>
         </form>
