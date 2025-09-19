@@ -1,4 +1,5 @@
 // Simple landing page, link to chat or chatbotinterface
+import VideoSummarizer from '@/components/ui/VideoSummarizer';
 import Link from 'next/link';
 
 export default function HomePage() {
@@ -8,6 +9,9 @@ export default function HomePage() {
       <div className="space-x-4">
         <Link href="/chat" className="btn btn-primary">Go to Chat</Link>
       </div>
+
+      <VideoSummarizer/>
+    
     </main>
   );
 }
