@@ -71,7 +71,8 @@
 //   );
 // }
 // src/app/chat/page.jsx
-"use client";
+// src/app/chat/page.jsx
+'use client';
 
 import { useState } from "react";
 import ChatSidebar from "@/components/chat/ChatSidebar";
@@ -93,19 +94,14 @@ export default function ChatPage() {
   const [inputValue, setInputValue] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  console.log("ChatPage render. isModalOpen=", isModalOpen);
+
   // normal text message send
   const handleSendMessage = async (message) => {
     if (!message.trim()) return;
-
-    const newMessage = {
-      id: Date.now(),
-      content: message,
-      sender: "user",
-      timestamp: new Date(),
-    };
+    const newMessage = { id: Date.now(), content: message, sender: "user", timestamp: new Date() };
     setMessages((prev) => [...prev, newMessage]);
     setInputValue("");
-
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -113,66 +109,29 @@ export default function ChatPage() {
         body: JSON.stringify({ prompt: message }),
       });
       const data = await res.json();
-
-      const botResponse = {
-        id: Date.now() + 1,
-        content: data.reply || "No response",
-        sender: "bot",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botResponse]);
+      setMessages((prev) => [...prev, { id: Date.now()+1, content: data.reply || "No response", sender: "bot", timestamp: new Date() }]);
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now() + 1,
-          content: "Error contacting AI: " + err.message,
-          sender: "bot",
-          timestamp: new Date(),
-        },
-      ]);
+      setMessages((prev) => [...prev, { id: Date.now()+1, content: "Error contacting AI: " + err.message, sender: "bot", timestamp: new Date() }]);
     }
   };
 
   // when a file is uploaded from modal
   const handleVideoUpload = async (file) => {
-    console.log("handleVideoUpload called with file:", file);
+    console.log("handleVideoUpload called with file:", file?.name);
     const data = await uploadVideoAndSummarize(file);
     console.log("Upload result:", data);
 
     if (data.summary) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          content: `Summary: ${data.summary}`,
-          sender: "bot",
-          timestamp: new Date(),
-        },
-      ]);
+      setMessages((prev) => [...prev, { id: Date.now(), content: `Summary: ${data.summary}`, sender: "bot", timestamp: new Date() }]);
     } else if (data.error) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          content: `Error: ${data.error}`,
-          sender: "bot",
-          timestamp: new Date(),
-        },
-      ]);
+      setMessages((prev) => [...prev, { id: Date.now(), content: `Error: ${data.error}`, sender: "bot", timestamp: new Date() }]);
     }
   };
 
   return (
     <div className="flex h-screen bg-base-100">
-      <ChatSidebar
-        conversations={[]}
-        activeConversation={1}
-        onConversationSelect={() => {}}
-        onNewChat={() => {}}
-      />
+      <ChatSidebar conversations={[]} activeConversation={1} onConversationSelect={() => {}} onNewChat={() => {}} />
       <div className="flex flex-col flex-1">
-        {/* Upload button at the top */}
         <div className="flex justify-end p-4">
           <UploadButton
             onClick={() => {
@@ -193,7 +152,10 @@ export default function ChatPage() {
 
       <UploadModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          console.log("modal onClose called");
+          setIsModalOpen(false);
+        }}
         onUpload={handleVideoUpload}
       />
     </div>
