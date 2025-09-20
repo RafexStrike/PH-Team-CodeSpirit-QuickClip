@@ -10,7 +10,9 @@ export default function HomePage() {
         <Link href="/chat" className="btn btn-primary">Go to Chat</Link>
       </div>
 
+
       <VideoSummarizer/>
+
     
     </main>
   );
