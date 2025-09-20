@@ -18,7 +18,11 @@ import { ThemeToggle } from "@/components/ui/theme-toggle"
 const routes = [
   { href: "/", label: "Home" },
   { href: "/upload", label: "Upload" },
+
   { href: "/flashcard", label: "Flashcard" },
+
+  { href: "/summaries", label: "Summaries" },
+
 ]
 
 export default function Navbar() {
