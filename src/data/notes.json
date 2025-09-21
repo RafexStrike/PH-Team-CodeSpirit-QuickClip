@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "JavaScript Closures",
+    "date": "2025-09-21",
+    "content": "<p>A closure is a function that remembers its outer scope variables even after the outer function has returned.</p>"
+  },
+  {
+    "id": "2",
+    "title": "React useState Hook",
+    "date": "2025-09-20",
+    "content": "<p>useState is a Hook that lets you add React state to function components.</p>"
+  },
+  {
+    "id": "3",
+    "title": "Next.js Pages",
+    "date": "2025-09-19",
+    "content": "<p>Pages in Next.js are React components exported from a file in the pages directory.</p>"
+  }
+]
