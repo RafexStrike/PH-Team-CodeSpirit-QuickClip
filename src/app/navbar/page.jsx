@@ -21,7 +21,7 @@ const routes = [
 
   { href: "/flashcard", label: "Flashcard" },
 
-  { href: "/summaries", label: "Summaries" },
+  { href: "/noteapp", label: "Notes" },
 
 ]
 
