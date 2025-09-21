@@ -4,6 +4,7 @@ import path from "path";
 import os from "os";
 import util from "util";
 import { exec as execCb } from "child_process";
+import { getChatCompletion } from "./callTheHermesForVideoSummarization";
 
 const exec = util.promisify(execCb);
 
@@ -107,41 +108,63 @@ export async function processVideoFile(videoPath) {
   }
 
   // Summarization via HF REST API
-  let summary = "";
-  try {
-    const sumUrl = "https://api-inference.huggingface.co/models/NousResearch/Hermes-3-Llama-3.1-8B";
-    console.log("Calling HF summarization endpoint:", sumUrl);
+  // let summary = "";
+  // try {
+  //   const sumUrl = "https://api-inference.huggingface.co/models/NousResearch/Hermes-3-Llama-3.1-8B";
+  //   console.log("Calling HF summarization endpoint:", sumUrl);
 
-    const prompt = `Summarize the transcript below into a concise summary (<= 3 sentences):\n\n${transcription}`;
+  //   const prompt = `Summarize the transcript below into a concise summary (<= 3 sentences):\n\n${transcription}`;
 
-    const sumRes = await fetch(sumUrl, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${hfToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ inputs: prompt }),
-    });
+  //   const sumRes = await fetch(sumUrl, {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${hfToken}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ inputs: prompt }),
+  //   });
 
-    const raw = await sumRes.text().catch(() => "");
-    if (!sumRes.ok) {
-      console.error("HF summary HTTP error", sumRes.status, sumRes.statusText, raw.slice(0, 2000));
-      throw new Error(`HF summary failed: ${sumRes.status} ${sumRes.statusText} - ${raw.slice(0,1000)}`);
-    }
+  //   const raw = await sumRes.text().catch(() => "");
+  //   if (!sumRes.ok) {
+  //     console.error("HF summary HTTP error", sumRes.status, sumRes.statusText, raw.slice(0, 2000));
+  //     throw new Error(`HF summary failed: ${sumRes.status} ${sumRes.statusText} - ${raw.slice(0,1000)}`);
+  //   }
 
-    let sumJson;
-    try { sumJson = raw ? JSON.parse(raw) : null; } catch (e) { sumJson = raw; }
-    console.log("Summary response (truncated):", (typeof sumJson === "string" ? sumJson : JSON.stringify(sumJson)).slice(0,800));
+  //   let sumJson;
+  //   try { sumJson = raw ? JSON.parse(raw) : null; } catch (e) { sumJson = raw; }
+  //   console.log("Summary response (truncated):", (typeof sumJson === "string" ? sumJson : JSON.stringify(sumJson)).slice(0,800));
 
-    if (Array.isArray(sumJson) && sumJson[0]?.generated_text) summary = sumJson[0].generated_text;
-    else if (sumJson?.generated_text) summary = sumJson.generated_text;
-    else if (sumJson?.reply) summary = sumJson.reply;
-    else if (sumJson?.choices?.[0]?.text) summary = sumJson.choices[0].text;
-    else summary = typeof sumJson === "string" ? sumJson : JSON.stringify(sumJson);
-  } catch (err) {
-    console.error("Summary call failed:", err);
-    summary = `Error generating summary: ${err?.message || err}`;
-  }
+  //   if (Array.isArray(sumJson) && sumJson[0]?.generated_text) summary = sumJson[0].generated_text;
+  //   else if (sumJson?.generated_text) summary = sumJson.generated_text;
+  //   else if (sumJson?.reply) summary = sumJson.reply;
+  //   else if (sumJson?.choices?.[0]?.text) summary = sumJson.choices[0].text;
+  //   else summary = typeof sumJson === "string" ? sumJson : JSON.stringify(sumJson);
+  // } catch (err) {
+  //   console.error("Summary call failed:", err);
+  //   summary = `Error generating summary: ${err?.message || err}`;
+  // }
+
+  // Summarization via shared chat helper (reuse existing chat code)
+let summary = "";
+try {
+  // import the helper at top of file:
+  // import { getChatCompletion } from "./chat";
+  // (make sure the import exists — see note below)
+  const prompt = `Summarize the transcript below into a concise summary (<= 3 sentences):\n\n${transcription}`;
+
+  // call the chat helper which uses InferenceClient under the hood
+  // you may pass model or params via the second arg if needed
+  summary = await getChatCompletion(prompt, {
+    model: "NousResearch/Hermes-3-Llama-3.1-8B",
+    // params: { max_tokens: 256 } // optional provider params if desired
+  });
+
+  console.log("Summary (from getChatCompletion) (trunc):", (summary || "").slice(0, 800));
+} catch (err) {
+  console.error("Summary call failed (via chat helper):", err);
+  summary = `Error generating summary: ${err?.message || err}`;
+}
+
 
   // cleanup audio
   await fs.promises.unlink(audioPath).catch(() => {});
