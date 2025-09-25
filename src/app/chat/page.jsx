@@ -80,7 +80,7 @@ import ChatWindow from "@/components/chat/ChatWindow";
 import ChatComposer from "@/components/chat/ChatComposer";
 import UploadButton from "@/components/chat/UploadButton";
 import UploadModal from "@/components/chat/UploadModal";
-import { uploadVideoAndSummarize } from "@/lib/uploadVideo";
+// import { uploadVideoAndSummarize } from "@/lib/uploadVideo";
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([
