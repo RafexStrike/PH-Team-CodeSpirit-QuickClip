@@ -1,13 +1,6 @@
 // src/lib/chat.js
 import { InferenceClient } from "@huggingface/inference";
 
-/**
- * Lightweight wrapper to get a chat completion using your HF token.
- * Uses chatCompletion (non-streaming) and normalizes the output to a string.
- *
- * Usage:
- *   const reply = await getChatCompletion("Summarize this...");
- */
 const hf = new InferenceClient(process.env.HF_TOKEN);
 
 export async function getChatCompletion(prompt, { model = "NousResearch/Hermes-3-Llama-3.1-8B", params = {} } = {}) {
