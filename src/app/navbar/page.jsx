@@ -73,7 +73,8 @@ export default function Navbar() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem><Link href='/register'>Sign Up</Link></DropdownMenuItem>
+              <DropdownMenuItem><Link href='/login'>Sign In</Link></DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
               <ThemeToggle/>

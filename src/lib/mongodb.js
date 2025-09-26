@@ -1,21 +1,16 @@
-// lib/mongodb.js
-import { MongoClient, ServerApiVersion } from "mongodb";
-
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@first-try-mongodb-atlas.3vtotij.mongodb.net/?retryWrites=true&w=majority&appName=First-Try-Mongodb-Atlas-Cluster1`;
-
-let client;
-let clientPromise;
-
-if (!global._mongoClientPromise) {
-  client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    },
-  });
-  global._mongoClientPromise = client.connect();
+import { MongoClient, ServerApiVersion } from "mongodb"
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+export const collectionNamesObj={
+  "userCollection": "test_user"
 }
-clientPromise = global._mongoClientPromise;
-
-export default clientPromise;
+export default function dbConnect(collectionName){
+    const uri = process.env.MONGO_URI;
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+return client.db(process.env.DB_NAME).collection(collectionName)
+}
