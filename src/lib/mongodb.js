@@ -1,21 +1,26 @@
 // lib/mongodb.js
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoClient } from "mongodb";
 
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@first-try-mongodb-atlas.3vtotij.mongodb.net/?retryWrites=true&w=majority&appName=First-Try-Mongodb-Atlas-Cluster1`;
+const uri = process.env.MONGODB_URI;
+const options = {};
 
 let client;
 let clientPromise;
 
-if (!global._mongoClientPromise) {
-  client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    },
-  });
-  global._mongoClientPromise = client.connect();
+if (!process.env.MONGODB_URI) {
+  throw new Error("Please add your Mongo URI to .env.local");
 }
-clientPromise = global._mongoClientPromise;
+
+if (process.env.NODE_ENV === "development") {
+  // In dev, reuse the same client across hot reloads
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    global._mongoClientPromise = client.connect();
+  }
+  clientPromise = global._mongoClientPromise;
+} else {
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
+}
 
 export default clientPromise;
