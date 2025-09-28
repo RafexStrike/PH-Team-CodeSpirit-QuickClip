@@ -1,6 +1,6 @@
 // app/api/messages/route.js
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
+import clientPromise from "@/lib/dbConnect";
 
 export async function GET() {
   try {

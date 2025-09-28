@@ -1,6 +1,6 @@
 "use server"
 
-import dbConnect, { collectionNamesObj } from "@/lib/mongodb";
+import dbConnect, { collectionNamesObj } from "@/lib/dbConnect";
 import bcrypt from "bcrypt"
 
 const registerUser = async (payload) => {
