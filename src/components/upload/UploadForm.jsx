@@ -1,14 +1,14 @@
 // src/components/UploadForm.jsx
-'use client';
+"use client";
 
-import React, { useRef, useState } from 'react';
-import ProgressBar from './ProgressBar';
+import React, { useRef, useState } from "react";
+import ProgressBar from "./ProgressBar";
 
 export default function UploadForm() {
   const [file, setFile] = useState(null);
   const [uploadPct, setUploadPct] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [videoUrl, setVideoUrl] = useState('');
+  const [videoUrl, setVideoUrl] = useState("");
   const [result, setResult] = useState(null);
   const inputRef = useRef(null);
 
@@ -18,7 +18,7 @@ export default function UploadForm() {
     const f = e.target.files?.[0] ?? null;
     setFile(f);
     if (f) setVideoUrl(URL.createObjectURL(f));
-    else setVideoUrl('');
+    else setVideoUrl("");
   };
 
   const handleUpload = () => {
@@ -27,10 +27,11 @@ export default function UploadForm() {
     setResult(null);
 
     const form = new FormData();
-    form.append('video', file);
+    form.append("video", file);
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/video_to_text');
+    // xhr.open('POST', '/api/video_to_text');
+    xhr.open("POST", `https://video-trascription-and-summary-generator.onrender.com/process`);
 
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
@@ -47,17 +48,20 @@ export default function UploadForm() {
             const json = JSON.parse(xhr.responseText);
             setResult(json);
           } catch (err) {
-            setResult({ error: 'Invalid JSON response from server' });
+            setResult({ error: "Invalid JSON response from server" });
           }
         } else {
-          setResult({ error: `Upload failed: ${xhr.status} ${xhr.statusText}`, details: xhr.responseText });
+          setResult({
+            error: `Upload failed: ${xhr.status} ${xhr.statusText}`,
+            details: xhr.responseText,
+          });
         }
       }
     };
 
     xhr.onerror = () => {
       setIsProcessing(false);
-      setResult({ error: 'Network error during upload' });
+      setResult({ error: "Network error during upload" });
     };
 
     xhr.send(form);
@@ -77,18 +81,22 @@ export default function UploadForm() {
       </div>
 
       <div className="flex items-center gap-3 mb-3">
-        <button className="btn btn-primary" onClick={handleUpload} disabled={!file || isProcessing}>
-          {isProcessing ? 'Uploading...' : 'Upload & Process'}
+        <button
+          className="btn btn-primary"
+          onClick={handleUpload}
+          disabled={!file || isProcessing}
+        >
+          {isProcessing ? "Uploading..." : "Upload & Process"}
         </button>
 
         <button
           className="btn btn-ghost"
           onClick={() => {
             setFile(null);
-            setVideoUrl('');
+            setVideoUrl("");
             setUploadPct(0);
             setResult(null);
-            if (inputRef.current) inputRef.current.value = '';
+            if (inputRef.current) inputRef.current.value = "";
           }}
           disabled={isProcessing}
         >
@@ -113,12 +121,17 @@ export default function UploadForm() {
         <div className="mt-4 p-3 bg-base-200 rounded">
           <h3 className="font-semibold">Result</h3>
           {result.error ? (
-            <pre className="text-sm text-red-500">{result.error}{result.details ? `\n${result.details}` : ''}</pre>
+            <pre className="text-sm text-red-500">
+              {result.error}
+              {result.details ? `\n${result.details}` : ""}
+            </pre>
           ) : (
             <>
               <div className="mt-2">
                 <strong>Transcription:</strong>
-                <div className="whitespace-pre-wrap mt-1">{result.transcription}</div>
+                <div className="whitespace-pre-wrap mt-1">
+                  {result.transcription}
+                </div>
               </div>
               <div className="mt-2">
                 <strong>Summary:</strong>
