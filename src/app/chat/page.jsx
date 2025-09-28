@@ -1,13 +1,13 @@
-
-'use client';
+"use client";
 
 import { useState } from "react";
 import ChatSidebar from "@/components/chat/ChatSidebar";
 import ChatWindow from "@/components/chat/ChatWindow";
 import ChatComposer from "@/components/chat/ChatComposer";
 
-
 export default function ChatPage() {
+  const [chatUniqueID, setChatUniqueID] = useState(Date.now());
+ 
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -17,13 +17,39 @@ export default function ChatPage() {
     },
   ]);
   const [inputValue, setInputValue] = useState("");
-  
+
+
+  const saveChatDataToDatabase = async (data) => {
+    try {
+      const dataToSend = await fetch("/api/getAndPostChatData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.log(
+        "Sorry. Failed to connect with mongodb. The error is: ",
+        error
+      );
+    }
+  };
+
 
   // normal text message send
   const handleSendMessage = async (message) => {
     if (!message.trim()) return;
-    const newMessage = { id: Date.now(), content: message, sender: "user", timestamp: new Date() };
-    setMessages((prev) => [...prev, newMessage]);
+    const newUserMessage = {
+      id: chatUniqueID,
+      content: message,
+      sender: "user",
+      timestamp: new Date(),
+    };
+ 
+    saveChatDataToDatabase(newUserMessage);
+
+    setMessages((prev) => [...prev, newUserMessage]);
     setInputValue("");
     try {
       const res = await fetch("/api/chat", {
@@ -32,31 +58,38 @@ export default function ChatPage() {
         body: JSON.stringify({ prompt: message }),
       });
       const data = await res.json();
-      setMessages((prev) => [...prev, { id: Date.now()+1, content: data.reply || "No response", sender: "bot", timestamp: new Date() }]);
+      const newBotMessage = {
+        id: chatUniqueID,
+        content: data.reply || "No response",
+        sender: "bot",
+        timestamp: new Date(),
+      };
+      saveChatDataToDatabase(newBotMessage);
+      setMessages((prev) => [...prev, newBotMessage]);
     } catch (err) {
-      setMessages((prev) => [...prev, { id: Date.now()+1, content: "Error contacting AI: " + err.message, sender: "bot", timestamp: new Date() }]);
-    }
-  };
-
-  // when a file is uploaded from modal
-  const handleVideoUpload = async (file) => {
-    console.log("handleVideoUpload called with file:", file?.name);
-    const data = await uploadVideoAndSummarize(file);
-    console.log("Upload result:", data);
-
-    if (data.summary) {
-      setMessages((prev) => [...prev, { id: Date.now(), content: `Summary: ${data.summary}`, sender: "bot", timestamp: new Date() }]);
-    } else if (data.error) {
-      setMessages((prev) => [...prev, { id: Date.now(), content: `Error: ${data.error}`, sender: "bot", timestamp: new Date() }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: chatUniqueID,
+          content: "Error contacting AI: " + err.message,
+          sender: "bot",
+          timestamp: new Date(),
+        },
+      ]);
     }
   };
 
   return (
     <div className="flex h-screen bg-base-100">
-      <ChatSidebar conversations={[]} activeConversation={1} onConversationSelect={() => {}} onNewChat={() => {}} />
+      <ChatSidebar
+        conversations={[]}
+        activeConversation={1}
+        onConversationSelect={() => {}}
+        onNewChat={() => {
+          setChatUniqueID(Date.now());
+        }}
+      />
       <div className="flex flex-col flex-1">
-    
-
         <ChatWindow messages={messages} />
 
         <ChatComposer
@@ -65,8 +98,6 @@ export default function ChatPage() {
           onSendMessage={handleSendMessage}
         />
       </div>
-
-     
     </div>
   );
 }
