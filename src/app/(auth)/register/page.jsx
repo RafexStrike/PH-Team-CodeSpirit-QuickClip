@@ -1,9 +1,11 @@
-"use client"
+"use client";
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import registerUser from "@/app/actions/auth/registerUser";
+import SocialLogin from "../login/components/SocialLogin";
 
 const RegisterPage = () => {
   const handleRegister = async (e) => {
@@ -15,31 +17,26 @@ const RegisterPage = () => {
     const password = form.password.value;
     const confirmPassword = form.confirmPassword.value;
 
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Confirm Password:", confirmPassword);
-
-    // Example: simple validation
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
 
-    // Here you can send data to backend
-    // await fetch("/api/register", { method: "POST", body: JSON.stringify({ name, email, password }) })
+    await registerUser({ name, email, password });
   };
 
   return (
-    <div>
-      <Card>
+    <div className="flex items-center justify-center min-h-screen px-4">
+      <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Create an Account</CardTitle>
+          <CardTitle className="text-xl">Create an Account</CardTitle>
           <CardDescription>
             Register below to get started with your account.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+
+        <CardContent className="flex flex-col gap-6">
+          {/* Form */}
           <form onSubmit={handleRegister} className="flex flex-col gap-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Full Name</Label>
@@ -47,7 +44,7 @@ const RegisterPage = () => {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="jhon@gmail.com" required />
+              <Input id="email" name="email" type="email" placeholder="john@gmail.com" required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
@@ -61,6 +58,9 @@ const RegisterPage = () => {
               Register
             </Button>
           </form>
+
+          {/* Social Login */}
+          <SocialLogin />
         </CardContent>
       </Card>
     </div>

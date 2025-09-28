@@ -2,31 +2,35 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-// import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-// import { ModeToggle } from "@/components/mode-toggle" // make a mode toggle with shadcn
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { User } from "lucide-react"
-import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { User, Sun, Moon } from "lucide-react"
+import { useTheme } from "next-themes"
+import { signOut, useSession } from "next-auth/react"
+import { useState, useEffect } from "react"
 
 const routes = [
   { href: "/", label: "Home" },
   { href: "/upload", label: "Upload" },
-
   { href: "/flashcard", label: "Flashcard" },
-
   { href: "/noteapp", label: "Notes" },
-
 ]
 
 export default function Navbar() {
   const pathname = usePathname()
+  const { data: session, status } = useSession()
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur">
@@ -42,12 +46,9 @@ export default function Navbar() {
             <Link
               key={route.href}
               href={route.href}
-            //   className={cn(
-            //     "text-sm font-medium transition-colors hover:text-primary",
-            //     pathname === route.href
-            //       ? "text-primary"
-            //       : "text-muted-foreground"
-            //   )}
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                pathname === route.href ? "text-primary" : "text-muted-foreground"
+              }`}
             >
               {route.label}
             </Link>
@@ -56,6 +57,7 @@ export default function Navbar() {
 
         {/* Right - Search + Actions */}
         <div className="flex items-center gap-3">
+          {/* Search */}
           <div className="hidden sm:block">
             <Input
               type="search"
@@ -63,22 +65,56 @@ export default function Navbar() {
               className="h-9 w-[180px] md:w-[250px]"
             />
           </div>
-          {/* <ModeToggle /> */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem><Link href='/register'>Sign Up</Link></DropdownMenuItem>
-              <DropdownMenuItem><Link href='/login'>Sign In</Link></DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-              <ThemeToggle/>
 
+          {/* Theme Toggle */}
+          {mounted && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </Button>
+          )}
+
+          {/* Auth Section */}
+          {mounted && (
+            <>
+              {status === "authenticated" ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="overflow-hidden rounded-full">
+                      {session.user?.image ? (
+                        <img
+                          src={session.user.image}
+                          alt="Profile"
+                          className="h-8 w-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <User className="h-5 w-5" />
+                      )}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => signOut()}>
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex gap-2">
+                  <Link href="/login">
+                    <Button variant="outline" size="sm">Sign In</Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button size="sm">Sign Up</Button>
+                  </Link>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </header>
