@@ -17,9 +17,9 @@ export async function askLLM(prompt) {
 
     return data.reply;
   } catch (error) {
-    console.error("Error in askLLM:", err);
-    throw new Error(
-      `Network error occured. Throwing error from " src/lib/callTheLlmUtility.js -> catch(error)"`
-    );
+    console.error("Error in askLLM:", error);
+    // throw new Error(
+    //   `Network error occured. Throwing error from " src/lib/callTheLlmUtility.js -> catch(error)"`
+    // );
   }
 }
