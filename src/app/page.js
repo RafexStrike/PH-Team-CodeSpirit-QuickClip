@@ -1,5 +1,4 @@
 // Simple landing page, link to chat or chatbotinterface
-import VideoSummarizer from '@/components/ui/VideoSummarizer';
 import Link from 'next/link';
 
 export default function HomePage() {
@@ -11,7 +10,7 @@ export default function HomePage() {
       </div>
 
 
-      <VideoSummarizer/>
+      
 
     
     </main>
