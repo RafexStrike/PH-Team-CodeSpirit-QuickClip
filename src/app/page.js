@@ -1,5 +1,6 @@
 // Simple landing page, link to chat or chatbotinterface
 import Link from 'next/link';
+import TestComponetForUsingLlmUtilityFunction from '@/components/TestComponetForUsingLlmUtilityFunction';
 
 export default function HomePage() {
   return (
@@ -10,7 +11,7 @@ export default function HomePage() {
       </div>
 
 
-      
+      <TestComponetForUsingLlmUtilityFunction></TestComponetForUsingLlmUtilityFunction>
 
     
     </main>
