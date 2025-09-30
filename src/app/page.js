@@ -11,7 +11,6 @@ export default function HomePage() {
       </div>
 
 
-      <TestComponetForUsingLlmUtilityFunction></TestComponetForUsingLlmUtilityFunction>
 
     
     </main>
