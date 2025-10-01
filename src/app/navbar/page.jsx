@@ -1,36 +1,38 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { User, Sun, Moon } from "lucide-react"
-import { useTheme } from "next-themes"
-import { signOut, useSession } from "next-auth/react"
-import { useState, useEffect } from "react"
+} from "@/components/ui/dropdown-menu";
+import { User, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
+import { signOut, useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 
 const routes = [
   { href: "/", label: "Home" },
+  { href: "/chat", label: "chat" },
   { href: "/upload", label: "Upload" },
   { href: "/flashcard", label: "Flashcard" },
   { href: "/noteapp", label: "Notes" },
-]
+  { href: "/takeNotes", label: "Test Simple Editor" },
+];
 
 export default function Navbar() {
-  const pathname = usePathname()
-  const { data: session, status } = useSession()
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const pathname = usePathname();
+  const { data: session, status } = useSession();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur">
@@ -47,7 +49,9 @@ export default function Navbar() {
               key={route.href}
               href={route.href}
               className={`text-sm font-medium transition-colors hover:text-primary ${
-                pathname === route.href ? "text-primary" : "text-muted-foreground"
+                pathname === route.href
+                  ? "text-primary"
+                  : "text-muted-foreground"
               }`}
             >
               {route.label}
@@ -73,7 +77,11 @@ export default function Navbar() {
               size="icon"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
             </Button>
           )}
 
@@ -83,7 +91,11 @@ export default function Navbar() {
               {status === "authenticated" ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="overflow-hidden rounded-full">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="overflow-hidden rounded-full"
+                    >
                       {session.user?.image ? (
                         <img
                           src={session.user.image}
@@ -106,7 +118,9 @@ export default function Navbar() {
               ) : (
                 <div className="flex gap-2">
                   <Link href="/login">
-                    <Button variant="outline" size="sm">Sign In</Button>
+                    <Button variant="outline" size="sm">
+                      Sign In
+                    </Button>
                   </Link>
                   <Link href="/register">
                     <Button size="sm">Sign Up</Button>
@@ -118,5 +132,5 @@ export default function Navbar() {
         </div>
       </div>
     </header>
-  )
+  );
 }

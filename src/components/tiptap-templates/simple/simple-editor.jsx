@@ -78,9 +78,18 @@ import content from "@/components/tiptap-templates/simple/data/content.json";
 // The Save button calls the saveNote function
 // from the parent component via the `onSave` prop.
 
-const MainToolbarContent = ({ onHighlighterClick, onLinkClick, isMobile, onSave }) => {
+const MainToolbarContent = ({
+  onHighlighterClick,
+  onLinkClick,
+  isMobile,
+  onSave,
+  onOpenSidebar,
+}) => {
   return (
     <>
+      <ToolbarGroup>
+        {/* ekhane age ">📂 Open Sidebar Button chilo */}
+      </ToolbarGroup>
       <Spacer />
       <ToolbarGroup>
         <UndoRedoButton action="undo" />
@@ -134,6 +143,7 @@ const MainToolbarContent = ({ onHighlighterClick, onLinkClick, isMobile, onSave 
 
       {/* SAVE BUTTON inserted into toolbar's right side */}
       <ToolbarGroup>
+        <Button>Load Notes</Button>
         {/* data-style is used by your button primitive — adjust to match your styles */}
         <Button data-style="primary" onClick={onSave}>
           Save Note

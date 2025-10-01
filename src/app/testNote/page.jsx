@@ -7,7 +7,7 @@ import ModalForCallingTheLLM from "@/components/noteComponents/ModalForCallingTh
 export default function page() {
   return (
     <div>
-      <h1>this is a note taking app</h1>
+      <h1>this is a note taking app modal</h1>
       <ModalForCallingTheLLM></ModalForCallingTheLLM>
     </div>
   );
