@@ -8,6 +8,10 @@ import FeaturesSection from "./layout-component/featuresSection/page";
 import OnePlateform from "./layout-component/onePlatform/page";
 import Whobenefit from "./layout-component/whobenefit/page";
 import Scrolling from "./layout-component/Scrolling/page";
+import PhotoGallery from "./layout-component/photoGalary/page";
+import FAQ from "./layout-component/faq/page";
+import SortingVisualizer from "./layout-component/sortingVisualizer/page";
+
 
 
 export default function HomePage() {
@@ -79,8 +83,14 @@ export default function HomePage() {
 
 <Whobenefit></Whobenefit>
 
+<FAQ></FAQ>
+
+
+<PhotoGallery></PhotoGallery>
+
 <Scrolling></Scrolling>
 
+<SortingVisualizer></SortingVisualizer>
 
      
      
