@@ -203,7 +203,7 @@ export default function SortingVisualizer() {
           <div className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-cyan-700 to-emerald-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl shadow-lg mb-3 sm:mb-4 max-w-full">
             <Cpu className="w-4 h-4 sm:w-6 sm:h-6 flex-shrink-0" />
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold truncate">
-              Enjoy AI Sorting Visualizer
+              Enjoy AI Sorting Visualizer <span className='bg-gradient-to-r from-indigo-800 to-amber-800 bg-clip-text text-transparent'>Game</span>
             </h1>
             <Sparkles className="w-4 h-4 sm:w-6 sm:h-6 flex-shrink-0" />
           </div>
