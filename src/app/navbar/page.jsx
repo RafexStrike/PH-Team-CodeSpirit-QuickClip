@@ -20,8 +20,7 @@ const routes = [
   { href: "/chat", label: "chat" },
   { href: "/upload", label: "Upload" },
   { href: "/flashcard", label: "Flashcard" },
-  { href: "/noteapp", label: "Notes" },
-  { href: "/takeNotes", label: "Test Simple Editor" },
+  { href: "/takeNotes", label: "Take Notes" },
 ];
 
 export default function Navbar() {

@@ -163,7 +163,7 @@ const data = {
   ],
 }
 
-export function AppSidebar(props) { // <-- The type annotation was removed here.
+export function AppSidebar(props) { 
   return (
     <Sidebar {...props}>
       <SidebarHeader>

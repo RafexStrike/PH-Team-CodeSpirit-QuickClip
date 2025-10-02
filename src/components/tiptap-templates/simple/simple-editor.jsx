@@ -143,7 +143,7 @@ const MainToolbarContent = ({
 
       {/* SAVE BUTTON inserted into toolbar's right side */}
       <ToolbarGroup>
-        <Button>Load Notes</Button>
+        <Button>New Collection</Button>
         {/* data-style is used by your button primitive — adjust to match your styles */}
         <Button data-style="primary" onClick={onSave}>
           Save Note
