@@ -75,7 +75,7 @@ import "@/components/tiptap-templates/simple/simple-editor.scss";
 
 import content from "@/components/tiptap-templates/simple/data/content.json";
 
-// The Save button calls the saveNote function
+// The Save button calls the saveCollection function
 // from the parent component via the `onSave` prop.
 
 const MainToolbarContent = ({
@@ -143,7 +143,7 @@ const MainToolbarContent = ({
 
       {/* SAVE BUTTON inserted into toolbar's right side */}
       <ToolbarGroup>
-        <Button>New Collection</Button>
+        <Button>New Note</Button>
         {/* data-style is used by your button primitive — adjust to match your styles */}
         <Button data-style="primary" onClick={onSave}>
           Save Note
@@ -239,7 +239,7 @@ export function SimpleEditor() {
     }
   }, [isMobile, mobileView]);
 
-  const saveNote = () => {
+  const saveCollection = () => {
     if (!editor) return;
     const html = editor.getHTML();
     const json = editor.getJSON();
@@ -276,7 +276,7 @@ export function SimpleEditor() {
               onHighlighterClick={() => setMobileView("highlighter")}
               onLinkClick={() => setMobileView("link")}
               isMobile={isMobile}
-              onSave={saveNote} // <-- Save passed here
+              onSave={saveCollection} // <-- Save passed here
             />
           ) : (
             <MobileToolbarContent
