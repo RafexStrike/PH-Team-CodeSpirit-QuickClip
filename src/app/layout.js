@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider"
 import Navbar from "./navbar/page"
 import { Toaster } from "@/components/ui/sonner"
 import NextAuthProvider from "@/Providers/NextAuthProvider"
+import Footer from "./footer/page"
 
 
 const geistSans = Geist({
@@ -38,6 +39,8 @@ export default function RootLayout({ children }) {
           </NextAuthProvider>
      
         </ThemeProvider>
+
+        <Footer></Footer>
       </body>
     </html>
   )
