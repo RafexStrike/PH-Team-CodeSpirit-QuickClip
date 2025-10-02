@@ -40,18 +40,18 @@ export default function HomePage() {
           
           <div className="mb-4 md:mb-6">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              Welcome to Our Multi-Tasking Platform.
+              Your all in one AI study buddy
             </h1>
           </div>
           
           {/* Description in middle */}
           <p className="text-lg sm:text-xl md:text-2xl mb-4 md:mb-6 leading-relaxed max-w-3xl mx-auto">
-            Turn hours of content into minutes. Instantly get the essence of any video with AI.
+            No switching apps, no losing focus.
           </p>
           
           {/* Quote */}
           <p className="italic text-base sm:text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto">
-            "Less time watching, more time learning."
+            Less time switching, more time learning.
           </p>
           
 
@@ -67,7 +67,7 @@ export default function HomePage() {
               href="/upload"
               className="w-full sm:w-auto inline-block bg-gradient-to-r from-blue-900 to-emerald-950 text-white font-semibold px-6 py-3 md:px-8 md:py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-300 text-center text-sm md:text-base"
             >
-              Summarize Now
+              Summarize Video
             </Link>
           </div>
         </div>

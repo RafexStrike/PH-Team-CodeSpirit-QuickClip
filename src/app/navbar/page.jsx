@@ -17,7 +17,7 @@ import { useState, useEffect } from "react";
 
 const routes = [
   { href: "/", label: "Home" },
-  { href: "/chat", label: "chat" },
+  { href: "/chat", label: "Chat" },
   { href: "/upload", label: "Upload" },
   { href: "/flashcard", label: "Flashcard" },
   { href: "/takeNotes", label: "Take Notes" },
@@ -38,7 +38,7 @@ export default function Navbar() {
       <div className="container flex h-16 items-center justify-between px-4">
         {/* Left - Logo */}
         <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-          <span className="text-primary">AI</span>Summarizer
+          <span className="text-primary">Luminal</span>AI
         </Link>
 
         {/* Center - Nav Links */}
@@ -60,14 +60,7 @@ export default function Navbar() {
 
         {/* Right - Search + Actions */}
         <div className="flex items-center gap-3">
-          {/* Search */}
-          <div className="hidden sm:block">
-            <Input
-              type="search"
-              placeholder="Search summaries..."
-              className="h-9 w-[180px] md:w-[250px]"
-            />
-          </div>
+    
 
           {/* Theme Toggle */}
           {mounted && (
