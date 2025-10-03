@@ -12,8 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CreateNewCollectionButton from "./CreateNewCollectionButton";
+import { useState } from "react";
 
 export function NewCollectionTriggerButton() {
+  const [newCollectionName, setNewCollectionName] = useState("");
+  const handleNewCollectionName = (e) => {
+    setNewCollectionName(e.target.value);
+    console.log(e.target.value)
+  };
   return (
     <Dialog>
       <form>
@@ -28,7 +34,13 @@ export function NewCollectionTriggerButton() {
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="name-1">Name</Label>
-              <Input id="name-1" name="name" defaultValue="New Collection" />
+              <Input
+                id="name-1"
+                name="name"
+                defaultValue="New Collection"
+              
+                onChange={handleNewCollectionName}
+              />
             </div>
             {/* <div className="grid gap-3">
               <Label htmlFor="username-1">Username</Label>
@@ -39,8 +51,7 @@ export function NewCollectionTriggerButton() {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            {/* <Button type="submit">Create New Collection</Button> */}
-            <CreateNewCollectionButton />
+            <CreateNewCollectionButton newCollectionName={newCollectionName} />
           </DialogFooter>
         </DialogContent>
       </form>
