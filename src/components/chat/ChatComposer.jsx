@@ -15,10 +15,10 @@ export default function ChatComposer({ inputValue, onInputChange, onSendMessage 
   };
 
   return (
-    <div className="bg-base-100 border-t border-base-300 p-4">
+    <div className="bg-base-100  border-t mb-20 border-base-300 p-4">
       <div className="max-w-4xl mx-auto">
         <div className="flex gap-3 items-end">
-          <div className="flex-1">
+          <div className="flex-1 ">
             <ChatInputBox
               value={inputValue}
               onChange={onInputChange}
@@ -26,7 +26,7 @@ export default function ChatComposer({ inputValue, onInputChange, onSendMessage 
               placeholder="Type your message here..."
             />
           </div>
-          <SendButton onClick={handleSend} disabled={!inputValue.trim()} />
+          {/* <SendButton onClick={handleSend} disabled={!inputValue.trim()} /> */}
         </div>
         <div className="text-xs text-base-content/60 mt-2 text-center">
           Press Enter to send, Shift + Enter for new line
