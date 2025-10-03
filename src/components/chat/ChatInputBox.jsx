@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-
+git 
 export default function ChatInputBox({ 
   value, 
   onChange, 
