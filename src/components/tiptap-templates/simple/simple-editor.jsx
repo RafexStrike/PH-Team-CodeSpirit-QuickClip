@@ -74,6 +74,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 import "@/components/tiptap-templates/simple/simple-editor.scss";
 
 import content from "@/components/tiptap-templates/simple/data/content.json";
+import { SaveNoteDialogue } from "@/components/noteComponents/SaveNoteDialogue";
 
 // The Save button calls the saveCollection function
 // from the parent component via the `onSave` prop.
@@ -148,6 +149,8 @@ const MainToolbarContent = ({
         <Button data-style="primary" onClick={onSave}>
           Save Note
         </Button>
+
+        <SaveNoteDialogue></SaveNoteDialogue>
       </ToolbarGroup>
 
       <ToolbarSeparator />
@@ -258,6 +261,8 @@ export function SimpleEditor() {
       .catch((err) => console.error("Save failed", err));
   };
 
+
+
   return (
     <div className="simple-editor-wrapper">
       <EditorContext.Provider value={{ editor }}>
@@ -276,7 +281,7 @@ export function SimpleEditor() {
               onHighlighterClick={() => setMobileView("highlighter")}
               onLinkClick={() => setMobileView("link")}
               isMobile={isMobile}
-              onSave={saveCollection} // <-- Save passed here
+              onSave={saveCollection} // <-- Save
             />
           ) : (
             <MobileToolbarContent
