@@ -3,7 +3,7 @@ import { Plus, MessageSquare, User, Settings, Trash2 } from 'lucide-react';
 
 export default function ChatSidebar({ conversations, activeConversation, onConversationSelect, onNewChat }) {
   return (
-    <div className="w-80 bg-base-200 border-r border-base-300 flex flex-col">
+    <div className="w-50 hidden lg:flex bg-base-200 border-r border-base-300 flex flex-col">
       {/* Header */}
       <div className="p-4 border-b border-base-300">
         <button onClick={onNewChat} className="btn btn-primary w-full gap-2">

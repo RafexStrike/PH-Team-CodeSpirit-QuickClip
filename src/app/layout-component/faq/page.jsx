@@ -162,7 +162,7 @@ export default function FAQ() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-2xl font-medium transition-all duration-300 ${
                   selectedCategory === category.id
                     ? 'bg-gradient-to-r from-cyan-700 to-emerald-700 text-white shadow-lg scale-105'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:shadow-md'
+                    : ' dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 '
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -214,12 +214,12 @@ export default function FAQ() {
           <div
             key={index}
             ref={el => contentRefs.current[index] = el}
-            className="group bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-cyan-200 dark:hover:border-gray-600 overflow-hidden"
+            className="group bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-transparent  dark:hover:border-gray-600 overflow-hidden"
           >
             {/* Question Header */}
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-gradient-to-r from-cyan-50 to-emerald-50 dark:hover:bg-gray-750 transition-all duration-300 rounded-3xl group-hover:scale-[1.02]"
+              className="w-full flex justify-between items-center px-6 py-5 text-left  transition-all duration-300 rounded-3xl group-hover:scale-[1.02]"
             >
               <div className="flex items-start gap-4 flex-1">
                 <div className="w-8 h-8 bg-gradient-to-r from-cyan-700 to-emerald-700 rounded-xl flex items-center justify-center text-white text-sm font-bold mt-1 flex-shrink-0">
