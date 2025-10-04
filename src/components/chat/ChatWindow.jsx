@@ -137,7 +137,7 @@ export default function ChatWindow({ messages }) {
                       : 'text-blue-600 dark:text-blue-400'
                   }`}
                 >
-                  {message.sender === 'user' ? 'You' : 'Assistant'}
+                  {message.sender === 'user' ? 'You' : 'Luminal'}
                 </span>
                 <span
                   className={`text-xs ${

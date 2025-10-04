@@ -8,10 +8,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-
-
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { ShowExistingCollectionModal } from "./ShowExistingCollectionModal";
 
 export function ExistingCollectionTriggerButton() {
   return (
@@ -21,16 +20,18 @@ export function ExistingCollectionTriggerButton() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Which collection do you want to save in?</AlertDialogTitle>
+          <AlertDialogTitle>
+            Which collection do you want to save in?
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            Create a collection to save the notes
+            Select a collection to save the notes
           </AlertDialogDescription>
         </AlertDialogHeader>
+        <ShowExistingCollectionModal />
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Existing Collection</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

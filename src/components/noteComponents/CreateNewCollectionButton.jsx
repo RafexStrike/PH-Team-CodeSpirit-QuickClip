@@ -13,7 +13,7 @@ export default function CreateNewCollectionButton({ newCollectionName }) {
 
     console.log("Saving the note...", html);
 
-    fetch("api/notes", {
+    fetch("/api/notesCollection", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({

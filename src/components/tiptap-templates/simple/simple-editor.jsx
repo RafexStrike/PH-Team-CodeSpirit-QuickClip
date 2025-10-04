@@ -248,7 +248,7 @@ export function SimpleEditor() {
     const json = editor.getJSON();
     console.log("Saving the note...", html);
 
-    fetch("/api/notes", {
+    fetch("/api/notesCollection", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ content: html }),
