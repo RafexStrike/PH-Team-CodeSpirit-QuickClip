@@ -1,17 +1,13 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Import demo data from JSON
 import demoData from "@/data/chat.json";
+import GenerateResources from "@/components/flashcard/GenerateResources";
 
 export default function FlashcardApp() {
   const [selectedTopic, setSelectedTopic] = useState(null);
@@ -67,6 +63,9 @@ export default function FlashcardApp() {
 
       {/* Flashcard Viewer */}
       <div className="flex-1 flex flex-col items-center justify-center p-6">
+        {/* experimental start */}
+        <GenerateResources></GenerateResources>
+        {/* experimanetal end */}
         {selectedTopic ? (
           <div className="w-full max-w-xl">
             <AnimatePresence mode="wait">

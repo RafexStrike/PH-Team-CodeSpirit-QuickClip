@@ -1,16 +1,15 @@
+import { Button } from "@/components/ui/button";
+import { ShowExistingCollectionModal } from "./ShowExistingCollectionList";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogCancel
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { ShowExistingCollectionModal } from "./ShowExistingCollectionModal";
 
 export function ExistingCollectionTriggerButton() {
   return (
