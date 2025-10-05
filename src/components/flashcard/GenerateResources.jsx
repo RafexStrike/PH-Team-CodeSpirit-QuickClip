@@ -1,6 +1,9 @@
+// src/components/flashcard/GenerateResources.jsx
+
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
+import { generateResourcesForRevision } from "@/lib/generateResourcesForRevision";
 
 // Utility function to truncate a string
 const truncateMessage = (message, wordLimit = 4) => {
@@ -44,6 +47,15 @@ export default function GenerateResources() {
         if (!res.ok) throw new Error("Failed to fetch chats");
         const chatData = await res.json();
         console.log("Fetched chat data:", chatData);
+
+        const generatedRevisionResources = await generateResourcesForRevision(
+          chatData
+        );
+
+        console.log(
+          "The resources that we got from the generatedResourcesForRevision utility function is:",
+          generatedRevisionResources
+        );
       } catch (error) {
         console.error("Error fetching chats:", error);
       }
