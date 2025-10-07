@@ -1,3 +1,6 @@
+// note: this component is unused...............
+// src/components/noteCompnents/CreateNewCollectionButton.jsx
+
 import React from "react";
 import { useContext } from "react";
 import { Button } from "../ui/button";

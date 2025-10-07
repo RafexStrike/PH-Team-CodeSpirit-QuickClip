@@ -3,7 +3,7 @@ import { MongoClient, ServerApiVersion } from "mongodb"
 export const collectionNamesObj={
   "userCollection": "users"
 }
-export default function dbConnect(notesCollectionName){
+export default function dbConnect(collectionName){
     const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, {
   serverApi: {
@@ -12,5 +12,5 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-return client.db(process.env.DB_NAME).collection(notesCollectionName)
+return client.db(process.env.DB_NAME).collection(collectionName)
 }

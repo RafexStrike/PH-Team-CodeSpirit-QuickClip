@@ -1,3 +1,4 @@
+// ******note: this component is unused!
 // src/components/noteComponents/ShowExistingCollectionList.jsx
 
 "use client";
