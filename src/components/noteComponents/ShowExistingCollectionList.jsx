@@ -8,6 +8,8 @@ import { EditorContext } from "@tiptap/react";
 
 export function ShowExistingCollectionModal() {
   const [collections, setCollections] = useState([]);
+  const [savingId, setSavingId] = useState(null);
+
   const { editor } = useContext(EditorContext);
 
   // Fetch all collections
@@ -48,36 +50,28 @@ export function ShowExistingCollectionModal() {
   };
 
   // Function to handle saving
-  const handleSavingOnExistingCollections = async (notesCollectionID) => {
+   async function handleSavingOnExistingCollections(collectionId) {
+    if (!editor) return;
+    setSavingId(collectionId);
     try {
-      if (!editor) {
-        console.error("Editor not ready");
-        return;
-      }
-
       const html = editor.getHTML();
-      const title = extractTitleFromHTML(html);
+      const title = html.replace(/<[^>]*>/g, " ").trim().split(/\s+/).slice(0, 5).join(" ") || "Untitled Note";
 
       const res = await fetch("/api/saveNotesToExistingCollection", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          collectionId: notesCollectionID,
-          title,
-          content: html,
-        }),
+        body: JSON.stringify({ collectionId, title, content: html }),
       });
-
-      if (!res.ok) throw new Error("Failed to save note");
-
-      const data = await res.json();
-      console.log("Note saved successfully:", data);
-      alert("Note saved successfully!");
-    } catch (error) {
-      console.error("Error saving note:", error);
-      alert("Error saving note. Check console for details.");
+      if (!res.ok) throw new Error(await res.text());
+      // success: close dialog
+      onOpenChange(false);
+    } catch (err) {
+      console.error("save failed", err);
+      alert("Failed to save note");
+    } finally {
+      setSavingId(null);
     }
-  };
+  }
 
   return (
     <div className="grid gap-4">

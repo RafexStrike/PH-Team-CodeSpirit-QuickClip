@@ -17,7 +17,7 @@ export default function CreateNewCollectionButton({ newCollectionName }) {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        collectionName: newCollectionName,
+        notesCollectionName: newCollectionName,
         content: html,
       }),
     })
