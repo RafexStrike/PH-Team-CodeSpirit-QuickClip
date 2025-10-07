@@ -15,14 +15,20 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const client = await clientPromise;
-  const database = client.db("Notes");
-  const body = await request.json();
+  try {
+    const client = await clientPromise;
+    const db = client.db("Notes");
+    const { notesCollectionName } = await request.json();
 
-  await database.collection("savedNotesCollection").insertOne(body);
+    // Insert a new collection
+    const result = await db.collection("savedNotesCollection").insertOne({
+      name: notesCollectionName,
+      createdAt: new Date(),
+    });
 
-  return NextResponse.json(
-    { message: "Note added to mongodb successfully." },
-    { status: 201 }
-  );
+    return NextResponse.json({ insertedId: result.insertedId });
+  } catch (error) {
+    console.error("Error creating collection:", error);
+    return new NextResponse("Failed to create collection", { status: 500 });
+  }
 }
