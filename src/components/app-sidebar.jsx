@@ -1,3 +1,4 @@
+"use client"
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 
@@ -21,184 +22,61 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-// This is sample data.
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Building Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Community",
-      url: "#",
-      items: [
-        {
-          title: "Contribution Guide",
-          url: "#",
-        },
-      ],
-    },
-  ],
-}
+import { useState , useEffect} from "react"
 
-export function AppSidebar(props) { 
+export function AppSidebar(props) {
+  const [navData, setNavData] = useState([]);
+
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      try {
+        const res = await fetch("/api/getBothTheNotesCollectionAndNotes");
+        if (!res.ok) throw new Error("Failed to fetch sidebar data");
+        const data = await res.json();
+        if (!mounted) return;
+
+        // Transform into the shape your component expects:
+        // navMain: [{ title, items: [{ title, url, isActive }] }]
+        const navMain = data.map((col) => ({
+          title: col.collectionName,
+          items: col.notes.map((note) => ({
+            title: note.title,
+            url: `/notes/${note.id}`, // adjust route to your app
+            isActive: false, // you can compute true/false based on router
+          })),
+        }));
+
+        setNavData(navMain);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    load();
+    return () => (mounted = false);
+  }, []);
+
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
-        <SearchForm />
-      </SidebarHeader>
+      {/* header omitted for brevity */}
       <SidebarContent className="gap-0">
-        {/* We create a collapsible SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
-          <Collapsible
-            key={item.title}
-            title={item.title}
-            defaultOpen
-            className="group/collapsible"
-          >
+        {navData.map((item) => (
+          <Collapsible key={item.title} title={item.title} defaultOpen className="group/collapsible">
             <SidebarGroup>
-              <SidebarGroupLabel
-                asChild
-                className="group/label text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm"
-              >
+              <SidebarGroupLabel asChild className="...">
                 <CollapsibleTrigger>
-                  {item.title}{" "}
+                  {item.title}
                   <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
+
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {item.items.map((item) => (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={item.isActive}>
-                          <a href={item.url}>{item.title}</a>
+                    {item.items.map((note) => (
+                      <SidebarMenuItem key={note.url}>
+                        <SidebarMenuButton asChild isActive={note.isActive}>
+                          <a href={note.url}>{note.title}</a>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
@@ -211,5 +89,5 @@ export function AppSidebar(props) {
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

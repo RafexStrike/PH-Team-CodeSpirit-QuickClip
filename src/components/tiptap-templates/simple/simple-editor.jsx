@@ -145,10 +145,7 @@ const MainToolbarContent = ({
       {/* SAVE BUTTON inserted into toolbar's right side */}
       <ToolbarGroup>
         <Button>New Note</Button>
-        {/* data-style is used by your button primitive — adjust to match your styles */}
-        <Button data-style="primary" onClick={onSave}>
-          Save Note
-        </Button>
+       
 
         <SaveNoteDialogue></SaveNoteDialogue>
       </ToolbarGroup>
