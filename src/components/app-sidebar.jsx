@@ -1,14 +1,14 @@
-"use client"
-import * as React from "react"
-import { ChevronRight } from "lucide-react"
+"use client";
+import * as React from "react";
+import { ChevronRight } from "lucide-react";
 
-import { SearchForm } from "@/components/search-form"
-import { VersionSwitcher } from "@/components/version-switcher"
+import { SearchForm } from "@/components/search-form";
+import { VersionSwitcher } from "@/components/version-switcher";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
@@ -20,12 +20,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-import { useState , useEffect} from "react"
+import { useState, useEffect } from "react";
+import { useNote } from "@/context/NoteContext";
 
 export function AppSidebar(props) {
   const [navData, setNavData] = useState([]);
+  const { setCurrentNote } = useNote();
 
   useEffect(() => {
     let mounted = true;
@@ -61,7 +63,12 @@ export function AppSidebar(props) {
       {/* header omitted for brevity */}
       <SidebarContent className="gap-0">
         {navData.map((item) => (
-          <Collapsible key={item.title} title={item.title} defaultOpen className="group/collapsible">
+          <Collapsible
+            key={item.title}
+            title={item.title}
+            defaultOpen
+            className="group/collapsible"
+          >
             <SidebarGroup>
               <SidebarGroupLabel asChild className="...">
                 <CollapsibleTrigger>
@@ -75,8 +82,15 @@ export function AppSidebar(props) {
                   <SidebarMenu>
                     {item.items.map((note) => (
                       <SidebarMenuItem key={note.url}>
-                        <SidebarMenuButton asChild isActive={note.isActive}>
-                          <a href={note.url}>{note.title}</a>
+                        {/* <SidebarMenuButton asChild isActive={note.isActive}> */}
+                        <SidebarMenuButton
+                          asChild
+                          onClick={() => {
+                            setCurrentNote(note);
+                          }}
+                        >
+                          {/* <a href={note.url}>{note.title}</a> */}
+                          <button>{note.title}</button>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
