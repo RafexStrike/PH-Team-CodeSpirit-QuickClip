@@ -76,6 +76,7 @@ import "@/components/tiptap-templates/simple/simple-editor.scss";
 import content from "@/components/tiptap-templates/simple/data/content.json";
 import { SaveNoteDialogue } from "@/components/noteComponents/SaveNoteDialogue";
 import { useNote } from "@/context/NoteContext";
+import ModalForCallingTheLLM from "@/components/noteComponents/ModalForCallingTheLLM";
 
 // The Save button calls the saveCollection function
 // from the parent component via the `onSave` prop.
@@ -146,7 +147,7 @@ const MainToolbarContent = ({
       {/* SAVE BUTTON inserted into toolbar's right side */}
       <ToolbarGroup>
         <Button>New Note</Button>
-
+        <ModalForCallingTheLLM></ModalForCallingTheLLM>
         <SaveNoteDialogue></SaveNoteDialogue>
       </ToolbarGroup>
 
@@ -185,14 +186,11 @@ export function SimpleEditor() {
   const { currentNote } = useNote();
   // console.log("showing the currentNote", currentNote);
   React.useEffect(() => {
-  console.log("🔥 currentNote changed:", currentNote);
-}, [currentNote]);
+    console.log("🔥 currentNote changed:", currentNote);
+  }, [currentNote]);
 
-console.log("NoteContext identity:", useNote());
- 
+  console.log("NoteContext identity:", useNote());
 
-
-  
   const isMobile = useIsMobile();
   const { height } = useWindowSize();
   const [mobileView, setMobileView] = React.useState("main");
@@ -239,31 +237,30 @@ console.log("NoteContext identity:", useNote());
     content: "",
   });
 
-
   // 🟩 Load selected note content dynamically
-React.useEffect(() => {
-  async function loadNoteContent() {
-    if (!currentNote || !editor) return;
+  React.useEffect(() => {
+    async function loadNoteContent() {
+      if (!currentNote || !editor) return;
 
-    const noteId = currentNote.url; // your sidebar sets note.url = id
+      const noteId = currentNote.url; // your sidebar sets note.url = id
 
-    try {
-      const res = await fetch(`/api/notes?id=${noteId}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      try {
+        const res = await fetch(`/api/notes?id=${noteId}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      const data = await res.json();
+        const data = await res.json();
 
-      // Load the HTML (or JSON) content into Tiptap
-      editor.commands.setContent(data.content || "", false);
+        // Load the HTML (or JSON) content into Tiptap
+        editor.commands.setContent(data.content || "", false);
 
-      console.log("✅ Loaded note content:", data.content);
-    } catch (error) {
-      console.error("❌ Error loading note content:", error);
+        console.log("✅ Loaded note content:", data.content);
+      } catch (error) {
+        console.error("❌ Error loading note content:", error);
+      }
     }
-  }
 
-  loadNoteContent();
-}, [currentNote, editor]);
+    loadNoteContent();
+  }, [currentNote, editor]);
 
   const rect = useCursorVisibility({
     editor,
