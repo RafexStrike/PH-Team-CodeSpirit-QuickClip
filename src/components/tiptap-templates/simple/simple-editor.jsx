@@ -75,6 +75,7 @@ import "@/components/tiptap-templates/simple/simple-editor.scss";
 
 import content from "@/components/tiptap-templates/simple/data/content.json";
 import { SaveNoteDialogue } from "@/components/noteComponents/SaveNoteDialogue";
+import { useNote } from "@/context/NoteContext";
 
 // The Save button calls the saveCollection function
 // from the parent component via the `onSave` prop.
@@ -145,7 +146,6 @@ const MainToolbarContent = ({
       {/* SAVE BUTTON inserted into toolbar's right side */}
       <ToolbarGroup>
         <Button>New Note</Button>
-       
 
         <SaveNoteDialogue></SaveNoteDialogue>
       </ToolbarGroup>
@@ -182,6 +182,17 @@ const MobileToolbarContent = ({ type, onBack }) => (
 );
 
 export function SimpleEditor() {
+  const { currentNote } = useNote();
+  // console.log("showing the currentNote", currentNote);
+  React.useEffect(() => {
+  console.log("🔥 currentNote changed:", currentNote);
+}, [currentNote]);
+
+console.log("NoteContext identity:", useNote());
+ 
+
+
+  
   const isMobile = useIsMobile();
   const { height } = useWindowSize();
   const [mobileView, setMobileView] = React.useState("main");
@@ -228,6 +239,32 @@ export function SimpleEditor() {
     content: "",
   });
 
+
+  // 🟩 Load selected note content dynamically
+React.useEffect(() => {
+  async function loadNoteContent() {
+    if (!currentNote || !editor) return;
+
+    const noteId = currentNote.url; // your sidebar sets note.url = id
+
+    try {
+      const res = await fetch(`/api/notes?id=${noteId}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+
+      // Load the HTML (or JSON) content into Tiptap
+      editor.commands.setContent(data.content || "", false);
+
+      console.log("✅ Loaded note content:", data.content);
+    } catch (error) {
+      console.error("❌ Error loading note content:", error);
+    }
+  }
+
+  loadNoteContent();
+}, [currentNote, editor]);
+
   const rect = useCursorVisibility({
     editor,
     overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
@@ -257,8 +294,6 @@ export function SimpleEditor() {
       .then((data) => console.log("Saved OK", data))
       .catch((err) => console.error("Save failed", err));
   };
-
-
 
   return (
     <div className="simple-editor-wrapper">

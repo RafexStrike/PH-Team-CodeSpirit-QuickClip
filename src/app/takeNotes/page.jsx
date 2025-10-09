@@ -1,3 +1,5 @@
+"use client"
+
 import { AppSidebar } from "@/components/app-sidebar";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import {

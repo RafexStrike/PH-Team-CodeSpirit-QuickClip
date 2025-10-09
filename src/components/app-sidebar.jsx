@@ -29,6 +29,9 @@ export function AppSidebar(props) {
   const [navData, setNavData] = useState([]);
   const { setCurrentNote } = useNote();
 
+  console.log("NoteContext identity:", useNote());
+
+
   useEffect(() => {
     let mounted = true;
     async function load() {
@@ -44,7 +47,8 @@ export function AppSidebar(props) {
           title: col.collectionName,
           items: col.notes.map((note) => ({
             title: note.title,
-            url: `/notes/${note.id}`, // adjust route to your app
+            // url: `/notes/${note.id}`, 
+            url: note.id, 
             isActive: false, // you can compute true/false based on router
           })),
         }));
