@@ -14,6 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Bot } from "lucide-react"; 
+
 
 export default function ModalForCallingTheLLM() {
   const [prompt, setPrompt] = useState("");
@@ -31,7 +33,10 @@ export default function ModalForCallingTheLLM() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Ask AI</Button>
+        <Button variant="outline">
+          {" "}
+          <Bot className="mr-1/2 h-4 w-4" /> Ask AI
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
