@@ -50,12 +50,24 @@ export default function FlashcardPage() {
       const chatData = await res.json();
       console.log("💬 Chat data:", chatData);
 
-      const generatedRevisionResources = await generateResourcesForRevision(chatData);
+      const generatedRevisionResources = await generateResourcesForRevision(
+        chatData
+      );
       console.log("📚 Generated resources:", generatedRevisionResources);
 
       // Extract only flashcards (if your LLM mixes MCQs + flashcards)
       const allItems = generatedRevisionResources.revisionItems || [];
-      const flashcards = allItems.filter(item => item.type === "flashcard" || item.answer);
+
+      // starts......
+      // Convert `front`/`back` to `question`/`answer`
+      const flashcards = allItems.map((item) => ({
+        question: item.front || item.question,
+        answer: item.back || item.answer,
+      }));
+      // ends.......
+      // const flashcards = allItems.filter(
+      //   (item) => item.type === "flashcard" || item.answer
+      // );
 
       setSelectedTopic({
         id,
@@ -89,44 +101,43 @@ export default function FlashcardPage() {
   return (
     <div className="flex h-screen">
       {/* 🧭 Sidebar - Chat History */}
-<div className="w-1/4 border-r bg-muted p-4">
-  <h2 className="text-xl font-bold mb-4">Chat History</h2>
-  <ScrollArea className="h-[calc(100vh-100px)] pr-2">
-    {collections.length === 0 ? (
-      <p className="text-sm text-muted-foreground">Loading chats...</p>
-    ) : (
-      // Reverse the collections so latest appears first
-      [...collections]
-        .reverse()
-        .map((collection) => (
-          <Card
-            key={collection.id}
-            className={`mb-2 cursor-pointer transition ${
-              selectedTopic?.id === collection.id
-                ? "border-primary bg-primary/10"
-                : "hover:bg-muted-foreground/10"
-            }`}
-            onClick={() => handleChatClick(collection.id)}
-          >
-            <CardHeader>
-              <CardTitle className="text-sm">
-                {truncateMessage(collection.firstMessage, 6)}
-              </CardTitle>
-              <p className="text-xs text-muted-foreground">
-                {collection.dateCreated || "No date"}
-              </p>
-            </CardHeader>
-          </Card>
-        ))
-    )}
-  </ScrollArea>
-</div>
-
+      <div className="w-1/4 border-r bg-muted p-4">
+        <h2 className="text-xl font-bold mb-4">Chat History</h2>
+        <ScrollArea className="h-[calc(100vh-100px)] pr-2">
+          {collections.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Loading chats...</p>
+          ) : (
+            // Reverse the collections so latest appears first
+            [...collections].reverse().map((collection) => (
+              <Card
+                key={collection.id}
+                className={`mb-2 cursor-pointer transition ${
+                  selectedTopic?.id === collection.id
+                    ? "border-primary bg-primary/10"
+                    : "hover:bg-muted-foreground/10"
+                }`}
+                onClick={() => handleChatClick(collection.id)}
+              >
+                <CardHeader>
+                  <CardTitle className="text-sm">
+                    {truncateMessage(collection.firstMessage, 6)}
+                  </CardTitle>
+                  <p className="text-xs text-muted-foreground">
+                    {collection.dateCreated || "No date"}
+                  </p>
+                </CardHeader>
+              </Card>
+            ))
+          )}
+        </ScrollArea>
+      </div>
 
       {/* 🧠 Flashcard Viewer */}
       <div className="flex-1 flex flex-col items-center justify-center p-6">
         {loading ? (
-          <p className="text-muted-foreground text-lg">Generating flashcards...</p>
+          <p className="text-muted-foreground text-lg">
+            Generating flashcards...
+          </p>
         ) : selectedTopic && selectedTopic.flashcards?.length > 0 ? (
           <div className="w-full max-w-xl">
             <AnimatePresence mode="wait">
@@ -152,7 +163,11 @@ export default function FlashcardPage() {
 
             {/* Navigation buttons */}
             <div className="flex justify-between mt-6">
-              <Button onClick={prevCard} disabled={currentIndex === 0} variant="outline">
+              <Button
+                onClick={prevCard}
+                disabled={currentIndex === 0}
+                variant="outline"
+              >
                 Prev
               </Button>
               <Button

@@ -15,7 +15,7 @@ export async function POST(req) {
       {
         role: "system",
         content:
-          "You are a helpful assistant that generates structured study materials (flashcards, MCQs, summaries) as a single JSON object with a 'revisionItems' array.",
+          "You are a helpful assistant that generates structured study materials (flashcards) as a single JSON object with a 'revisionItems' array.",
       },
       {
         role: "user",
